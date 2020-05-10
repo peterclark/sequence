@@ -7,9 +7,14 @@ import "./Card.scss";
 const Card = (props) => {
   const { coord, data, token, onPlaceToken } = props;
 
-  const rank = useMemo(() => (isString(data) ? data[0] : props.rank), [props]);
-  const suit = useMemo(() => (isString(data) ? data[1] : props.suit), [props]);
-  const name = useMemo(() => `${rank}${suit}`, [rank, suit]);
+  const rank = useMemo(() => (isString(data) ? data[0] : props.rank), [
+    props,
+    data,
+  ]);
+  const suit = useMemo(() => (isString(data) ? data[1] : props.suit), [
+    props,
+    data,
+  ]);
 
   const suitClass = useMemo(() => {
     return {
@@ -37,6 +42,7 @@ const Card = (props) => {
     >
       <span className="rank">{numberRank}</span>
       <span className="suit">{suit}</span>
+      <i className="fas fa-circle" />
     </a>
   );
 };

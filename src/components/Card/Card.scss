@@ -1,5 +1,32 @@
 .Card {
+  .fas {
+    display: none;
+  }
   &.Token {
-    background-color: lightgray;
+    .fas {
+      display: inline-block;
+      color: white;
+      position: absolute;
+      top: 19px;
+      left: 11px;
+      font-size: 2em;
+      border-radius: 2em;
+      padding: 4px;
+      background: white;
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+
+      &.green {
+        color: green;
+        background-color: darkgreen;
+      }
+      &.blue {
+        color: blue;
+        background-color: darkblue;
+      }
+      &.red {
+        color: red;
+        background-color: darkred;
+      }
+    }
   }
 }

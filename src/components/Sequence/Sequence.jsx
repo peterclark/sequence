@@ -6,9 +6,10 @@ import { get } from "lodash";
 import "./Sequence.scss";
 
 const Sequence = (props) => {
-  const { game, gameId } = props;
+  const { game, gameId, userId } = props;
 
-  const moves = useMemo(() => game.board || {}, [game]);
+  const { board: moves = {}, players } = useMemo(() => game || {}, [game]);
+  const me = useMemo(() => players[userId], [players, userId]);
   const board = [
     ["JB", "2♠", "3♠", "4♠", "5♠", "6♠", "7♠", "8♠", "9♠", "JL"],
     ["6♣", "5♣", "4♣", "3♣", "2♣", "A♥", "K♥", "Q♥", "T♥", "T♠"],
@@ -23,6 +24,7 @@ const Sequence = (props) => {
   ];
 
   const handlePlaceToken = (coord) => {
+    if (!me.active) return;
     db.placeToken(gameId, coord).then(() =>
       console.log(`token placed at ${coord}`)
     );

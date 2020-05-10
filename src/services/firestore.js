@@ -20,7 +20,7 @@ export const startGame = (userId, userName) => {
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     createdBy: userId,
     players: {
-      [userId]: userName,
+      [userId]: { name: userName, active: true },
     },
   });
 };
@@ -29,7 +29,7 @@ export const joinGame = (gameId, userId, userName) => {
   return db
     .collection("games")
     .doc(gameId)
-    .update({ [`players.${userId}`]: userName });
+    .update({ [`players.${userId}.name`]: userName });
 };
 
 export const subscribeToGame = (gameId, callback) => {
@@ -41,6 +41,13 @@ export const subscribeToGame = (gameId, callback) => {
 
 export const getGame = (gameId) => {
   return db.collection("games").doc(gameId).get();
+};
+
+export const pickTeam = (gameId, userId, team) => {
+  return db
+    .collection("games")
+    .doc(gameId)
+    .update({ [`players.${userId}.team`]: team });
 };
 
 export const placeToken = (gameId, [x, y]) => {

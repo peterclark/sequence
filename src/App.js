@@ -14,7 +14,6 @@ function App() {
   const [userName, setUserName] = useState();
   const [game, setGame] = useState();
   const [gameId, setGameId] = useGameId("gameId");
-  const [moves, setMoves] = useState({});
 
   const validName = useMemo(() => size(userName) > 2, [userName]);
   const players = useMemo(() => (game ? game.players : []), [game]);
@@ -111,21 +110,21 @@ function App() {
       <div className="TopPanel">
         <div className="TopPlayer">
           {values(players).map((p) => (
-            <span key={uniqueId("player-")}>{p} </span>
+            <span key={uniqueId("player-")}>{p.name} </span>
           ))}
         </div>
       </div>
       <div className="MainPanel">
         <div className="LeftPanel">
-          <div className="player">{player}</div>
+          <div className="player">Todo</div>
         </div>
-        <Sequence game={game} gameId={gameId} />
+        <Sequence game={game} gameId={gameId} userId={userId} />
         <div className="RightPanel">
-          <div className="player">{player}</div>
+          <div className="player">Todo</div>
         </div>
       </div>
       <div className="BottomPanel">
-        <div className="player">{player}</div>
+        <div className="player">Todo</div>
       </div>
     </div>
   );
