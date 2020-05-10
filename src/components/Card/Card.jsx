@@ -1,32 +1,56 @@
 import React, { useMemo } from "react";
 import classNames from "classnames";
-import { toLower } from "lodash";
+import { toLower, isString } from "lodash";
 import "./cards.css";
+import "./Card.scss";
 
 const Card = (props) => {
-  const rank = useMemo(() => props.rank, [props.rank]);
-  const suit = useMemo(() => props.suit, [props.suit]);
+  const { coord, data, token, onPlaceToken } = props;
+
+  const rank = useMemo(() => (isString(data) ? data[0] : props.rank), [props]);
+  const suit = useMemo(() => (isString(data) ? data[1] : props.suit), [props]);
+  const name = useMemo(() => `${rank}${suit}`, [rank, suit]);
+
   const suitClass = useMemo(() => {
     return {
       "♣": "clubs",
       "♦": "diams",
       "♥": "hearts",
       "♠": "spades",
-    }[props.suit];
-  }, [props.suit]);
+    }[suit];
+  }, [suit]);
 
-  const handleSelectCard = (card) => console.log(`clicked ${card}`);
+  const numberRank = useMemo(() => {
+    return rank === "T" ? "10" : rank;
+  }, [rank]);
+  const rankClass = useMemo(() => toLower(`rank-${numberRank}`), [numberRank]);
 
+  if (data === "JB") return <Joker big />;
+  if (data === "JL") return <Joker little />;
   return (
     <a
       href="#"
-      className={classNames("card", `rank-${toLower(rank)}`, suitClass)}
-      onClick={() => handleSelectCard(`${rank}${suit}`)}
+      className={classNames("Card", "card", rankClass, suitClass, data, {
+        Token: token,
+      })}
+      onClick={() => onPlaceToken(coord)}
     >
-      <span className="rank">{rank}</span>
+      <span className="rank">{numberRank}</span>
       <span className="suit">{suit}</span>
     </a>
   );
 };
 
-export default Card;
+const Joker = ({ big }) => {
+  return (
+    <span
+      className={classNames("card", big ? "big" : "little", "joker")}
+      href="#"
+    >
+      <span className="rank">{big ? "+" : "-"}</span>
+      <span className="suit">Joker</span>
+    </span>
+  );
+};
+
+export { Joker, Card };

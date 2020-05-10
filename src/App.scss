@@ -1,0 +1,38 @@
+.App {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  background-color: rgba(0, 0, 0, 0.05);
+
+  .input-group {
+    width: 50%;
+    margin-top: 50vh;
+  }
+
+  .TopPanel,
+  .BottomPanel {
+    border: 1px solid red;
+    flex-grow: 1;
+    min-width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .MainPanel {
+    display: flex;
+    border: 1px solid orange;
+    min-width: 100vw;
+    justify-content: center;
+
+    .LeftPanel,
+    .RightPanel {
+      border: 1px solid green;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+}
