@@ -15,15 +15,15 @@
       background: white;
       box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
 
-      &.green {
+      &.success {
         color: green;
         background-color: darkgreen;
       }
-      &.blue {
+      &.primary {
         color: blue;
         background-color: darkblue;
       }
-      &.red {
+      &.danger {
         color: red;
         background-color: darkred;
       }

@@ -10,29 +10,30 @@
     margin-top: 50vh;
   }
 
-  .TopPanel,
-  .BottomPanel {
-    border: 1px solid red;
-    flex-grow: 1;
-    min-width: 100vw;
+  .TopPanel {
+    width: 100%;
+    padding: 1em 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-evenly;
     align-items: center;
+
+    .Seat {
+      .TakeSeatButton {
+        margin: 1em;
+        border-radius: 2em;
+        padding: 1em;
+        width: 4em;
+        height: 4em;
+      }
+    }
   }
 
   .MainPanel {
     display: flex;
-    border: 1px solid orange;
-    min-width: 100vw;
     justify-content: center;
-
-    .LeftPanel,
-    .RightPanel {
-      border: 1px solid green;
-      flex-grow: 1;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+    align-items: center;
+    border-top: 5px solid gray;
+    flex: 1;
+    width: 100%;
   }
 }

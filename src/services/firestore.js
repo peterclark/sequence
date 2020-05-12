@@ -1,6 +1,7 @@
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
+import { startCase, lowerCase } from "lodash";
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -16,20 +17,25 @@ export const authenticateAnonymously = () => {
 };
 
 export const startGame = (userId, userName) => {
+  userName = startCase(lowerCase(userName));
   return db.collection("games").add({
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     createdBy: userId,
     players: {
-      [userId]: { name: userName, active: true },
+      [userId]: { id: userId, name: userName, active: true },
     },
   });
 };
 
 export const joinGame = (gameId, userId, userName) => {
+  userName = startCase(lowerCase(userName));
   return db
     .collection("games")
     .doc(gameId)
-    .update({ [`players.${userId}.name`]: userName });
+    .update({
+      [`players.${userId}.id`]: userId,
+      [`players.${userId}.name`]: userName,
+    });
 };
 
 export const subscribeToGame = (gameId, callback) => {
@@ -43,16 +49,19 @@ export const getGame = (gameId) => {
   return db.collection("games").doc(gameId).get();
 };
 
-export const pickTeam = (gameId, userId, team) => {
+export const takeSeat = (gameId, userId, position, team) => {
   return db
     .collection("games")
     .doc(gameId)
-    .update({ [`players.${userId}.team`]: team });
+    .update({
+      [`players.${userId}.position`]: position,
+      [`players.${userId}.team`]: team,
+    });
 };
 
-export const placeToken = (gameId, [x, y]) => {
+export const placeToken = (gameId, [x, y], team) => {
   return db
     .collection("games")
     .doc(gameId)
-    .update({ [`board.${x}.${y}`]: true });
+    .update({ [`board.${x}.${y}`]: team });
 };

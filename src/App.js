@@ -5,7 +5,8 @@ import useGameId from "./hooks/useGameId";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
-import { size, get, values, uniqueId } from "lodash";
+import classNames from "classnames";
+import { size, get, values, sortBy, keyBy, inRange } from "lodash";
 import "./App.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -16,8 +17,22 @@ function App() {
   const [gameId, setGameId] = useGameId("gameId");
 
   const validName = useMemo(() => size(userName) > 2, [userName]);
-  const players = useMemo(() => (game ? game.players : []), [game]);
+  const players = useMemo(() => (game ? values(game.players) : []), [game]);
+  const sortedPlayes = useMemo(() => sortBy(players, "position"), [players]);
+  const playerMap = useMemo(() => keyBy(players, "position"), [players]);
   const player = useMemo(() => get(game, `players.${userId}`), [game, userId]);
+  const mySeat = useMemo(() => get(player, "position"), [player]);
+  const isSeated = useMemo(() => inRange(mySeat, 5), [mySeat]);
+  const seats = [
+    { position: 0, team: "success" },
+    { position: 1, team: "primary" },
+    { position: 2, team: "danger" },
+    { position: 3, team: "success" },
+    { position: 4, team: "primary" },
+    { position: 5, team: "danger" },
+  ];
+
+  useMemo(() => console.log(playerMap), [playerMap]);
 
   const handleStartGame = () => {
     db.startGame(userId, userName)
@@ -43,6 +58,11 @@ function App() {
 
   const handleTypeName = (e) => {
     setUserName(e.target.value);
+  };
+
+  const handleTakeSeat = (position, team) => {
+    if (isSeated) return;
+    db.takeSeat(gameId, userId, position, team);
   };
 
   useEffect(() => {
@@ -108,23 +128,26 @@ function App() {
   return (
     <div className="App">
       <div className="TopPanel">
-        <div className="TopPlayer">
-          {values(players).map((p) => (
-            <span key={uniqueId("player-")}>{p.name} </span>
-          ))}
-        </div>
+        {seats.map(({ position, team }) => (
+          <div className="Seat" key={`seat-${position}`}>
+            {playerMap[position] && <h1>{playerMap[position].name}</h1>}
+            {!playerMap[position] && !isSeated && (
+              <Button
+                className="TakeSeatButton"
+                variant={team}
+                onClick={() => handleTakeSeat(position, team)}
+              >
+                <i className="fas fa-2x fa-chair" />
+              </Button>
+            )}
+            {!playerMap[position] && isSeated && (
+              <i className={`fas fa-2x fa-life-ring fa-spin text-${team}`} />
+            )}
+          </div>
+        ))}
       </div>
       <div className="MainPanel">
-        <div className="LeftPanel">
-          <div className="player">Todo</div>
-        </div>
         <Sequence game={game} gameId={gameId} userId={userId} />
-        <div className="RightPanel">
-          <div className="player">Todo</div>
-        </div>
-      </div>
-      <div className="BottomPanel">
-        <div className="player">Todo</div>
       </div>
     </div>
   );

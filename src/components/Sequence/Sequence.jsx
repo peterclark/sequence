@@ -25,7 +25,7 @@ const Sequence = (props) => {
 
   const handlePlaceToken = (coord) => {
     if (!me.active) return;
-    db.placeToken(gameId, coord).then(() =>
+    db.placeToken(gameId, coord, me.team).then(() =>
       console.log(`token placed at ${coord}`)
     );
   };
