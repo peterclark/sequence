@@ -6,7 +6,16 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import classNames from "classnames";
-import { size, get, values, sortBy, keyBy, inRange } from "lodash";
+import {
+  size,
+  get,
+  values,
+  keyBy,
+  inRange,
+  sample,
+  keys,
+  isNumber,
+} from "lodash";
 import "./App.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -18,11 +27,21 @@ function App() {
 
   const validName = useMemo(() => size(userName) > 2, [userName]);
   const players = useMemo(() => (game ? values(game.players) : []), [game]);
-  const sortedPlayes = useMemo(() => sortBy(players, "position"), [players]);
   const playerMap = useMemo(() => keyBy(players, "position"), [players]);
+  const isMinSeated = useMemo(
+    () => size(values(players).filter((p) => isNumber(p.position))) > 1,
+    [players]
+  );
   const player = useMemo(() => get(game, `players.${userId}`), [game, userId]);
   const mySeat = useMemo(() => get(player, "position"), [player]);
   const isSeated = useMemo(() => inRange(mySeat, 5), [mySeat]);
+  const { isActive, createdBy } = useMemo(() => game || {}, [game]);
+  const isHost = useMemo(() => createdBy && createdBy === userId, [
+    createdBy,
+    player,
+    userId,
+  ]);
+
   const seats = [
     { position: 0, team: "success" },
     { position: 1, team: "primary" },
@@ -34,8 +53,8 @@ function App() {
 
   useMemo(() => console.log(playerMap), [playerMap]);
 
-  const handleStartGame = () => {
-    db.startGame(userId, userName)
+  const handleCreateGame = () => {
+    db.createGame(userId, userName)
       .then((doc) => {
         setGameId(doc.id);
         console.log(`${userName} started game ${doc.id}`);
@@ -49,6 +68,13 @@ function App() {
         console.log(`${userName} joined game ${gameId}`);
       })
       .catch((error) => console.log(error));
+  };
+
+  const handleStartGame = () => {
+    const startingPlayer = sample(keys(playerMap));
+    db.startGame(gameId, startingPlayer.id).then(() =>
+      console.log("game starting...")
+    );
   };
 
   const onGameUpdate = (data) => {
@@ -96,7 +122,7 @@ function App() {
             onChange={handleTypeName}
           />
           <InputGroup.Append>
-            <Button onClick={handleStartGame} disabled={!validName}>
+            <Button onClick={handleCreateGame} disabled={!validName}>
               Start Game
             </Button>
           </InputGroup.Append>
@@ -130,23 +156,35 @@ function App() {
       <div className="TopPanel">
         {seats.map(({ position, team }) => (
           <div className="Seat" key={`seat-${position}`}>
-            {playerMap[position] && <h1>{playerMap[position].name}</h1>}
-            {!playerMap[position] && !isSeated && (
+            {playerMap[position] && (
+              <div className="SeatedPlayer">
+                <i className={`fas fa-2x fa-life-ring text-${team}`} />
+                <span>{playerMap[position].name}</span>
+              </div>
+            )}
+            {!playerMap[position] && !isActive && (
               <Button
                 className="TakeSeatButton"
                 variant={team}
+                disabled={isSeated}
                 onClick={() => handleTakeSeat(position, team)}
               >
                 <i className="fas fa-2x fa-chair" />
               </Button>
             )}
-            {!playerMap[position] && isSeated && (
-              <i className={`fas fa-2x fa-life-ring fa-spin text-${team}`} />
-            )}
           </div>
         ))}
       </div>
-      <div className="MainPanel">
+      <div className={classNames("MainPanel", { isActive })}>
+        {isMinSeated && isHost && !isActive && (
+          <Button
+            className="StartButton"
+            variant="success"
+            onClick={handleStartGame}
+          >
+            <i className="fa fa-lg fa-power-off" />
+          </Button>
+        )}
         <Sequence game={game} gameId={gameId} userId={userId} />
       </div>
     </div>

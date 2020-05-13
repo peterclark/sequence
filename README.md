@@ -1,4 +1,34 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Data Structure
+
+```json
+123456: {
+  id: [UID],
+  name: 'Joe',
+  team: ['success' | 'danger' | 'primary'],
+  active: [true | false],
+  position: [0,1,2,3,4,5]
+}
+```
+
+## TODO
+
+1. ~~Show token next to name~~
+2. ~~Show start button after 2 people sit~~
+3. ~~Start game~~
+4. ~~Set random 1st player~~
+5. Show cards for current player
+6. Show back of cards for other players
+7. Show decks for drawing
+8. Indicate which users's turn
+9. Highlight cards that can have tokens placed on them
+10. Countdown timer?
+11. Draw a card
+12. Remove a token
+13. Place a wild
+14. Discard a dead card, draw a new card
+15. Determine if winner
+16. Highlight winners
+17. Play again button (same players, mix teams, add players)
 
 ## Available Scripts
 
@@ -26,16 +56,6 @@ The build is minified and the filenames include the hashes.<br />
 Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
 
 ## Learn More
 

@@ -42,7 +42,7 @@ const Card = (props) => {
     >
       <span className="rank">{numberRank}</span>
       <span className="suit">{suit}</span>
-      <i className={classNames("fas fa-circle", token)} />
+      <i className={classNames("fas fa-life-ring", token)} />
     </a>
   );
 };

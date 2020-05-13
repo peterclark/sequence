@@ -18,12 +18,33 @@
     align-items: center;
 
     .Seat {
+      .SeatedPlayer {
+        display: flex;
+        align-items: center;
+        font-family: "Lato", sans-serif;
+        font-weight: 300;
+        font-style: italic;
+        color: rgba(0, 0, 0, 0.75);
+
+        .fas {
+          margin-right: 0.5em;
+        }
+
+        span {
+          font-size: 2em;
+        }
+      }
       .TakeSeatButton {
         margin: 1em;
         border-radius: 2em;
         padding: 1em;
         width: 4em;
         height: 4em;
+
+        &:disabled {
+          pointer-events: none;
+          opacity: 0.25;
+        }
       }
     }
   }
@@ -35,5 +56,56 @@
     border-top: 5px solid gray;
     flex: 1;
     width: 100%;
+
+    &.isActive {
+      .Sequence {
+        opacity: 1;
+        pointer-events: auto;
+      }
+    }
+
+    .Sequence {
+      opacity: 0.25;
+      pointer-events: none;
+    }
+
+    .StartButton {
+      position: fixed;
+      z-index: 99;
+      border-radius: 50%;
+      width: 100px;
+      height: 100px;
+      font-family: "Lato", sans-serif;
+      font-weight: 300;
+      font-style: italic;
+      font-size: 2em;
+      box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 1px 0 #666, 0 5px 0 #444, 0 6px 6px rgba(0, 0, 0, 0.6);
+      background: linear-gradient(green, darkgreen);
+      animation: pulsate 2s linear infinite;
+      @keyframes pulsate {
+        0% {
+          color: #ddd;
+          text-shadow: 0 -1px 0 #000;
+        }
+        50% {
+          color: #fff;
+          text-shadow: 0 -1px 0 #444, 0 0 5px #ffd, 0 0 8px #fff;
+        }
+        100% {
+          color: #ddd;
+          text-shadow: 0 -1px 0 #000;
+        }
+      }
+      &:active {
+        color: #fff;
+        text-shadow: 0 -1px 0 #444, 0 0 5px #ffd, 0 0 8px #fff;
+        box-shadow: 0 1px 0 #666, 0 2px 0 #444, 0 2px 2px rgba(0, 0, 0, 0.9);
+        -webkit-transform: translateY(3px);
+        transform: translateY(3px);
+        -webkit-animation: none;
+        animation: none;
+      }
+    }
   }
 }

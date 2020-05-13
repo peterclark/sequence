@@ -16,13 +16,13 @@ export const authenticateAnonymously = () => {
   return firebase.auth().signInAnonymously();
 };
 
-export const startGame = (userId, userName) => {
+export const createGame = (userId, userName) => {
   userName = startCase(lowerCase(userName));
   return db.collection("games").add({
     createdAt: firebase.firestore.FieldValue.serverTimestamp(),
     createdBy: userId,
     players: {
-      [userId]: { id: userId, name: userName, active: true },
+      [userId]: { id: userId, name: userName },
     },
   });
 };
@@ -56,6 +56,16 @@ export const takeSeat = (gameId, userId, position, team) => {
     .update({
       [`players.${userId}.position`]: position,
       [`players.${userId}.team`]: team,
+    });
+};
+
+export const startGame = (gameId, startingPlayerId) => {
+  return db
+    .collection("games")
+    .doc(gameId)
+    .update({
+      isActive: true,
+      [`players.${startingPlayerId}.isActive`]: true,
     });
 };
 
