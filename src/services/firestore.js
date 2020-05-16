@@ -1,7 +1,13 @@
 import * as firebase from "firebase/app";
 import "firebase/firestore";
 import "firebase/auth";
-import { startCase, lowerCase } from "lodash";
+import { startCase, lowerCase, join, flatten, shuffle, remove } from "lodash";
+
+const SUITS = ["♣", "♦", "♥", "♠"];
+const RANKS = [2, 3, 4, 5, 6, 7, 8, 9, "T", "J", "Q", "K", "A"];
+const CARDS = flatten(
+  SUITS.map((suit) => RANKS.map((rank) => join([rank, suit], "")))
+);
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -60,12 +66,16 @@ export const takeSeat = (gameId, userId, position, team) => {
 };
 
 export const startGame = (gameId, startingPlayerId) => {
+  const cards = shuffle([...CARDS, ...CARDS]);
+  const myCards = remove(cards, (card, index) => index < 5);
   return db
     .collection("games")
     .doc(gameId)
     .update({
       isActive: true,
+      cards: cards,
       [`players.${startingPlayerId}.isActive`]: true,
+      [`players.${startingPlayerId}.cards`]: myCards,
     });
 };
 

@@ -58,7 +58,7 @@
     #75a1bf,
     #3e3e63 50%
   );
-  background-image: -webkit-gradient(
+  /* background-image: -webkit-gradient(
     radial,
     center center,
     20,
@@ -67,7 +67,7 @@
     from(#3c3),
     color-stop(0.4, #363),
     to(#030)
-  );
+  ); */
   /* yes, it's intentional that Mozilla, Webkit, Opera and IE all will get different backgrounds ... why not? :) */
 }
 

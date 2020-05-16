@@ -18,9 +18,12 @@
     align-items: center;
 
     .Seat {
+      &.isEmpty {
+        display: none;
+      }
       .SeatedPlayer {
         display: flex;
-        align-items: center;
+        flex-direction: column;
         font-family: "Lato", sans-serif;
         font-weight: 300;
         font-style: italic;
@@ -30,14 +33,41 @@
           margin-right: 0.5em;
         }
 
-        span {
+        .PlayerName {
           font-size: 2em;
+          align-self: center;
+          .fas {
+            display: inline-block;
+            color: white;
+            font-size: 1em;
+            top: 19px;
+            left: 11px;
+            border-radius: 2em;
+            padding: 4px;
+            background: white;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+
+            &.text-success {
+              color: green;
+              background-color: darkgreen;
+            }
+            &.text-primary {
+              color: blue;
+              background-color: darkblue;
+            }
+            &.text-danger {
+              color: red;
+              background-color: darkred;
+            }
+          }
+        }
+        .playingCards {
+          font-size: 12px;
         }
       }
       .TakeSeatButton {
         margin: 1em;
         border-radius: 2em;
-        padding: 1em;
         width: 4em;
         height: 4em;
 

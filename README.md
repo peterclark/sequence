@@ -16,8 +16,8 @@
 2. ~~Show start button after 2 people sit~~
 3. ~~Start game~~
 4. ~~Set random 1st player~~
-5. Show cards for current player
-6. Show back of cards for other players
+5. ~~Show cards for current player~~
+6. ~~Show back of cards for other players~~
 7. Show decks for drawing
 8. Indicate which users's turn
 9. Highlight cards that can have tokens placed on them

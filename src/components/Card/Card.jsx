@@ -34,7 +34,7 @@ const Card = (props) => {
   if (data === "JL") return <Joker little />;
   return (
     <a
-      href="#"
+      href={`#${data}`}
       className={classNames("Card", "card", rankClass, suitClass, data, {
         Token: token,
       })}
@@ -48,15 +48,41 @@ const Card = (props) => {
 };
 
 const Joker = ({ big }) => {
+  const size = big ? "big" : "little";
   return (
-    <span
-      className={classNames("card", big ? "big" : "little", "joker")}
-      href="#"
-    >
+    <span className={classNames("card", size, "joker")} href={`#${size}`}>
       <span className="rank">{big ? "+" : "-"}</span>
       <span className="suit">Joker</span>
     </span>
   );
 };
 
-export { Joker, Card };
+const BackCard = () => {
+  return (
+    <li>
+      <span className="card back">*</span>
+    </li>
+  );
+};
+
+const HandCard = ({ data }) => {
+  const [rank, suit] = data.split("");
+
+  const suitClass = {
+    "♣": "clubs",
+    "♦": "diams",
+    "♥": "hearts",
+    "♠": "spades",
+  }[suit];
+
+  const numberRank = rank === "T" ? "10" : rank;
+  const rankClass = toLower(`rank-${numberRank}`);
+  return (
+    <li className={classNames("card", rankClass, suitClass, data)}>
+      <span className="rank">{numberRank}</span>
+      <span className="suit">{suit}</span>
+    </li>
+  );
+};
+
+export { Joker, Card, BackCard, HandCard };

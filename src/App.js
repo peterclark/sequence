@@ -1,21 +1,13 @@
 import React, { useState, useEffect, useMemo } from "react";
 import Sequence from "./components/Sequence/Sequence";
+import { Hand } from "./components/Hand";
 import * as db from "./services/firestore";
 import useGameId from "./hooks/useGameId";
 import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import classNames from "classnames";
-import {
-  size,
-  get,
-  values,
-  keyBy,
-  inRange,
-  sample,
-  keys,
-  isNumber,
-} from "lodash";
+import { size, get, values, keyBy, inRange, sample, isNumber } from "lodash";
 import "./App.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -26,7 +18,10 @@ function App() {
   const [gameId, setGameId] = useGameId("gameId");
 
   const validName = useMemo(() => size(userName) > 2, [userName]);
-  const players = useMemo(() => (game ? values(game.players) : []), [game]);
+  const players = useMemo(
+    () => (game ? values(game.players).filter((p) => p.id) : []),
+    [game]
+  );
   const playerMap = useMemo(() => keyBy(players, "position"), [players]);
   const isMinSeated = useMemo(
     () => size(values(players).filter((p) => isNumber(p.position))) > 1,
@@ -38,7 +33,6 @@ function App() {
   const { isActive, createdBy } = useMemo(() => game || {}, [game]);
   const isHost = useMemo(() => createdBy && createdBy === userId, [
     createdBy,
-    player,
     userId,
   ]);
 
@@ -51,13 +45,11 @@ function App() {
     { position: 5, team: "danger" },
   ];
 
-  useMemo(() => console.log(playerMap), [playerMap]);
-
   const handleCreateGame = () => {
     db.createGame(userId, userName)
       .then((doc) => {
         setGameId(doc.id);
-        console.log(`${userName} started game ${doc.id}`);
+        console.log(`${userName} created game ${doc.id}`);
       })
       .catch((error) => console.log(error));
   };
@@ -71,9 +63,9 @@ function App() {
   };
 
   const handleStartGame = () => {
-    const startingPlayer = sample(keys(playerMap));
+    const startingPlayer = sample(players);
     db.startGame(gameId, startingPlayer.id).then(() =>
-      console.log("game starting...")
+      console.log(`game starting with ${startingPlayer.name}`)
     );
   };
 
@@ -155,21 +147,33 @@ function App() {
     <div className="App">
       <div className="TopPanel">
         {seats.map(({ position, team }) => (
-          <div className="Seat" key={`seat-${position}`}>
+          <div
+            className={classNames("Seat", {
+              isEmpty: isActive && !playerMap[position],
+            })}
+            key={`seat-${position}`}
+          >
             {playerMap[position] && (
               <div className="SeatedPlayer">
-                <i className={`fas fa-2x fa-life-ring text-${team}`} />
-                <span>{playerMap[position].name}</span>
+                <Hand
+                  team={team}
+                  cards={playerMap[position].cards}
+                  mine={playerMap[position].id === player.id}
+                />
+                <span className="PlayerName">
+                  <i className={`fas fa-life-ring text-${team}`} />
+                  {playerMap[position].name}
+                </span>
               </div>
             )}
             {!playerMap[position] && !isActive && (
               <Button
                 className="TakeSeatButton"
-                variant={team}
+                variant="default"
                 disabled={isSeated}
                 onClick={() => handleTakeSeat(position, team)}
               >
-                <i className="fas fa-2x fa-chair" />
+                <i className={`fas fa-3x fa-life-ring text-${team}`} />
               </Button>
             )}
           </div>
