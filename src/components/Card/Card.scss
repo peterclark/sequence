@@ -2,6 +2,11 @@
   .fas {
     display: none;
   }
+  &.canTake {
+    &:not(.Token) {
+      opacity: 1 !important;
+    }
+  }
   &.Token {
     .fas {
       display: inline-block;

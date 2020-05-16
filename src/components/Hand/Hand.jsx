@@ -6,7 +6,7 @@ import "./Hand.scss";
 const Hand = ({ cards = [], mine }) => {
   console.log(cards, mine);
   return (
-    <div className="playingCards faceImages rotateHand Hand">
+    <div className="playingCards faceImages fourColours rotateHand Hand">
       {!mine && (
         <ul className="hand">
           {range(5).map((c) => (

@@ -20,7 +20,7 @@
 6. ~~Show back of cards for other players~~
 7. Show decks for drawing
 8. Indicate which users's turn
-9. Highlight cards that can have tokens placed on them
+9. ~~Highlight cards that can have tokens placed on them~~
 10. Countdown timer?
 11. Draw a card
 12. Remove a token

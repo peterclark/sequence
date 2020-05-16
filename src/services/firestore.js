@@ -85,3 +85,12 @@ export const placeToken = (gameId, [x, y], team) => {
     .doc(gameId)
     .update({ [`board.${x}.${y}`]: team });
 };
+
+export const removeToken = (gameId, [x, y]) => {
+  return db
+    .collection("games")
+    .doc(gameId)
+    .update({
+      [`board.${x}.${y}`]: firebase.firestore.FieldValue.delete(),
+    });
+};

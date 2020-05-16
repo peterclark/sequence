@@ -3,6 +3,7 @@ import * as db from "../../services/firestore";
 import { uniqueId } from "lodash";
 import { Card } from "../Card";
 import { get } from "lodash";
+import classNames from "classnames";
 import "./Sequence.scss";
 
 const Sequence = (props) => {
@@ -10,6 +11,14 @@ const Sequence = (props) => {
 
   const { board: moves = {}, players } = useMemo(() => game || {}, [game]);
   const me = useMemo(() => players[userId], [players, userId]);
+  const hasTwoEyedJack = useMemo(
+    () => me.cards.includes("J♣") || me.cards.includes("J♦"),
+    [me]
+  );
+  const hasOneEyedJack = useMemo(
+    () => me.cards.includes("J♠") || me.cards.includes("J♥"),
+    [me]
+  );
   const board = [
     ["JB", "2♠", "3♠", "4♠", "5♠", "6♠", "7♠", "8♠", "9♠", "JL"],
     ["6♣", "5♣", "4♣", "3♣", "2♣", "A♥", "K♥", "Q♥", "T♥", "T♠"],
@@ -30,8 +39,15 @@ const Sequence = (props) => {
     );
   };
 
+  const handleRemoveToken = (coord) => {
+    if (!me.isActive || !hasOneEyedJack) return;
+    db.removeToken(gameId, coord).then(() =>
+      console.log(`token removed at ${coord}`)
+    );
+  };
+
   return (
-    <div className="Sequence">
+    <div className={classNames("Sequence", { Active: me.isActive })}>
       {board.map((row, x) => (
         <div
           className="playingCards faceImages fourColours"
@@ -41,10 +57,13 @@ const Sequence = (props) => {
             {row.map((card, y) => (
               <li key={uniqueId(`row-${card}`)}>
                 <Card
+                  canTake={me.cards.includes(card) || hasTwoEyedJack}
+                  canRemove={hasOneEyedJack}
                   data={card}
                   coord={[x, y]}
                   token={get(moves, `${x}.${y}`)}
                   onPlaceToken={handlePlaceToken}
+                  onRemoveToken={handleRemoveToken}
                 />
               </li>
             ))}

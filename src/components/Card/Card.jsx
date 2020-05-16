@@ -5,7 +5,7 @@ import "./cards.css";
 import "./Card.scss";
 
 const Card = (props) => {
-  const { coord, data, token, onPlaceToken } = props;
+  const { coord, data, token, onPlaceToken, canTake } = props;
 
   const rank = useMemo(() => (isString(data) ? data[0] : props.rank), [
     props,
@@ -37,6 +37,7 @@ const Card = (props) => {
       href={`#${data}`}
       className={classNames("Card", "card", rankClass, suitClass, data, {
         Token: token,
+        canTake,
       })}
       onClick={() => onPlaceToken(coord)}
     >
