@@ -1,10 +1,12 @@
 .Card {
+  pointer-events: none;
   .fas {
     display: none;
   }
   &.canTake {
     &:not(.Token) {
       opacity: 1 !important;
+      pointer-events: all;
     }
   }
   &.Token {

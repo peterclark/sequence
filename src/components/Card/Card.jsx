@@ -39,7 +39,7 @@ const Card = (props) => {
         Token: token,
         canTake,
       })}
-      onClick={() => onPlaceToken(coord)}
+      onClick={() => canTake && onPlaceToken(coord)}
     >
       <span className="rank">{numberRank}</span>
       <span className="suit">{suit}</span>

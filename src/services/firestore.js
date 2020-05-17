@@ -65,18 +65,19 @@ export const takeSeat = (gameId, userId, position, team) => {
     });
 };
 
-export const startGame = (gameId, startingPlayerId) => {
+export const startGame = (gameId, players) => {
   const cards = shuffle([...CARDS, ...CARDS]);
-  const myCards = remove(cards, (card, index) => index < 5);
-  return db
-    .collection("games")
-    .doc(gameId)
-    .update({
-      isActive: true,
-      cards: cards,
-      [`players.${startingPlayerId}.isActive`]: true,
-      [`players.${startingPlayerId}.cards`]: myCards,
-    });
+  const game = {
+    isActive: true,
+    cards: cards,
+  };
+  shuffle(players).forEach((player, index) => {
+    const playerPath = `players.${player.id}`;
+    const hand = remove(cards, (card, index) => index < 5);
+    if (index === 0) game[`${playerPath}.isActive`] = true;
+    game[`${playerPath}.cards`] = hand;
+  });
+  return db.collection("games").doc(gameId).update(game);
 };
 
 export const placeToken = (gameId, [x, y], team) => {

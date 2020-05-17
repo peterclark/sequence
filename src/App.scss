@@ -14,10 +14,11 @@
     width: 100%;
     padding: 1em 0;
     display: flex;
-    justify-content: space-evenly;
+    justify-content: center;
     align-items: center;
 
     .Seat {
+      margin: 0 2em;
       &.isEmpty {
         display: none;
       }
@@ -62,7 +63,7 @@
           }
         }
         .playingCards {
-          font-size: 12px;
+          font-size: 1em;
         }
       }
       .TakeSeatButton {
@@ -83,7 +84,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-top: 5px solid gray;
     flex: 1;
     width: 100%;
 

@@ -7,7 +7,7 @@ import Button from "react-bootstrap/Button";
 import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import classNames from "classnames";
-import { size, get, values, keyBy, inRange, sample, isNumber } from "lodash";
+import { size, get, values, keyBy, inRange, isNumber } from "lodash";
 import "./App.scss";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -63,9 +63,8 @@ function App() {
   };
 
   const handleStartGame = () => {
-    const startingPlayer = sample(players);
-    db.startGame(gameId, startingPlayer.id).then(() =>
-      console.log(`game starting with ${startingPlayer.name}`)
+    db.startGame(gameId, players).then(() =>
+      console.log(`game starting with ${players.length} players...`)
     );
   };
 
@@ -159,6 +158,7 @@ function App() {
                   team={team}
                   cards={playerMap[position].cards}
                   mine={playerMap[position].id === player.id}
+                  isActive={isActive}
                 />
                 <span className="PlayerName">
                   <i className={`fas fa-life-ring text-${team}`} />

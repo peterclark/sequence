@@ -11,13 +11,14 @@ const Sequence = (props) => {
 
   const { board: moves = {}, players } = useMemo(() => game || {}, [game]);
   const me = useMemo(() => players[userId], [players, userId]);
+  const myCards = useMemo(() => get(me, "cards") || [], [me]);
   const hasTwoEyedJack = useMemo(
-    () => me.cards.includes("J♣") || me.cards.includes("J♦"),
-    [me]
+    () => myCards.includes("J♣") || myCards.includes("J♦"),
+    [myCards]
   );
   const hasOneEyedJack = useMemo(
-    () => me.cards.includes("J♠") || me.cards.includes("J♥"),
-    [me]
+    () => myCards.includes("J♠") || myCards.includes("J♥"),
+    [myCards]
   );
   const board = [
     ["JB", "2♠", "3♠", "4♠", "5♠", "6♠", "7♠", "8♠", "9♠", "JL"],
@@ -57,7 +58,7 @@ const Sequence = (props) => {
             {row.map((card, y) => (
               <li key={uniqueId(`row-${card}`)}>
                 <Card
-                  canTake={me.cards.includes(card) || hasTwoEyedJack}
+                  canTake={myCards.includes(card) || hasTwoEyedJack}
                   canRemove={hasOneEyedJack}
                   data={card}
                   coord={[x, y]}
