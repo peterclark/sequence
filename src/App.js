@@ -160,7 +160,11 @@ function App() {
                   mine={playerMap[position].id === player.id}
                   isActive={isActive}
                 />
-                <span className="PlayerName">
+                <span
+                  className={classNames("PlayerName", {
+                    isPlaying: playerMap[position].isActive,
+                  })}
+                >
                   <i className={`fas fa-life-ring text-${team}`} />
                   {playerMap[position].name}
                 </span>

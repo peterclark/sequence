@@ -19,16 +19,18 @@
 5. ~~Show cards for current player~~
 6. ~~Show back of cards for other players~~
 7. Show decks for drawing
-8. Indicate which users's turn
+8. ~~Indicate which users's turn~~
 9. ~~Highlight cards that can have tokens placed on them~~
 10. Countdown timer?
 11. Draw a card
-12. Remove a token
-13. Place a wild
+12. ~~Remove a token~~
+13. ~~Place a wild~~
 14. Discard a dead card, draw a new card
 15. Determine if winner
 16. Highlight winners
 17. Play again button (same players, mix teams, add players)
+18. Remove played card from players hand
+19. Prevent player from playing twice quickly
 
 ## Available Scripts
 

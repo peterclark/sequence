@@ -5,7 +5,15 @@ import "./cards.css";
 import "./Card.scss";
 
 const Card = (props) => {
-  const { coord, data, token, onPlaceToken, canTake } = props;
+  const {
+    coord,
+    data,
+    token,
+    onPlaceToken,
+    canTake,
+    onRemoveToken,
+    canRemove,
+  } = props;
 
   const rank = useMemo(() => (isString(data) ? data[0] : props.rank), [
     props,
@@ -30,6 +38,11 @@ const Card = (props) => {
   }, [rank]);
   const rankClass = useMemo(() => toLower(`rank-${numberRank}`), [numberRank]);
 
+  const handleSelectCard = () => {
+    if (!token && canTake) onPlaceToken(coord);
+    if (token && canRemove) onRemoveToken(coord);
+  };
+
   if (data === "JB") return <Joker big />;
   if (data === "JL") return <Joker little />;
   return (
@@ -38,8 +51,9 @@ const Card = (props) => {
       className={classNames("Card", "card", rankClass, suitClass, data, {
         Token: token,
         canTake,
+        canRemove: token && canRemove,
       })}
-      onClick={() => canTake && onPlaceToken(coord)}
+      onClick={handleSelectCard}
     >
       <span className="rank">{numberRank}</span>
       <span className="suit">{suit}</span>

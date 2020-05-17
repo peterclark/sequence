@@ -37,6 +37,10 @@
         .PlayerName {
           font-size: 2em;
           align-self: center;
+
+          &.isPlaying {
+            font-weight: 600;
+          }
           .fas {
             display: inline-block;
             color: white;
