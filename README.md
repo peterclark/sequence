@@ -22,7 +22,7 @@
 8. ~~Place a wild~~
 9. ~~Indicate which users's turn~~
 10. ~~Highlight cards that can have tokens placed on them~~
-11. Remove played card from players hand
+11. ~~Remove played card from players hand~~
 12. Show decks for drawing
 13. Draw a card
 14. Fade out dead cards, Discard a dead card, draw a new card

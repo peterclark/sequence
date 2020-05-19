@@ -40,7 +40,7 @@ const Sequence = (props) => {
     const currentPlayerIndex = indexOf(playerOrder, currentPlayerId);
     const nextPlayerIndex = (currentPlayerIndex + 1) % playerOrder.length;
     return playerOrder[nextPlayerIndex];
-  }, [players]);
+  }, [playersByPosition, currentPlayerId]);
 
   const board = [
     ["JB", "2♠", "3♠", "4♠", "5♠", "6♠", "7♠", "8♠", "9♠", "JL"],
