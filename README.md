@@ -1,6 +1,6 @@
 ## Data Structure
 
-```json
+```javascript
 123456: {
   id: [UID],
   name: 'Joe',
