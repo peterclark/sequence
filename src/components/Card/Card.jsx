@@ -39,8 +39,8 @@ const Card = (props) => {
   const rankClass = useMemo(() => toLower(`rank-${numberRank}`), [numberRank]);
 
   const handleSelectCard = () => {
-    if (!token && canTake) onPlaceToken(coord);
-    if (token && canRemove) onRemoveToken(coord);
+    if (!token && canTake) onPlaceToken(coord, data);
+    if (token && canRemove) onRemoveToken(coord, data);
   };
 
   if (data === "JB") return <Joker big />;

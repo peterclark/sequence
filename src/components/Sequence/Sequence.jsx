@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import * as db from "../../services/firestore";
 import { uniqueId } from "lodash";
 import { Card } from "../Card";
-import { get } from "lodash";
+import { get, values, sortBy, indexOf } from "lodash";
 import classNames from "classnames";
 import "./Sequence.scss";
 
@@ -12,14 +12,36 @@ const Sequence = (props) => {
   const { board: moves = {}, players } = useMemo(() => game || {}, [game]);
   const me = useMemo(() => players[userId], [players, userId]);
   const myCards = useMemo(() => get(me, "cards") || [], [me]);
+
+  // Two Eyed Jacks are Wild
   const hasTwoEyedJack = useMemo(
     () => myCards.includes("J♣") || myCards.includes("J♦"),
     [myCards]
   );
+  // One Eyed Jacks Remove
   const hasOneEyedJack = useMemo(
     () => myCards.includes("J♠") || myCards.includes("J♥"),
     [myCards]
   );
+  const playersByPosition = useMemo(() => sortBy(values(players), "position"), [
+    players,
+  ]);
+  const currentPlayerId = useMemo(
+    () =>
+      get(
+        values(players).find((p) => p.isActive),
+        "id"
+      ),
+    [players]
+  );
+
+  const nextPlayerId = useMemo(() => {
+    const playerOrder = playersByPosition.map((p) => p.id);
+    const currentPlayerIndex = indexOf(playerOrder, currentPlayerId);
+    const nextPlayerIndex = (currentPlayerIndex + 1) % playerOrder.length;
+    return playerOrder[nextPlayerIndex];
+  }, [players]);
+
   const board = [
     ["JB", "2♠", "3♠", "4♠", "5♠", "6♠", "7♠", "8♠", "9♠", "JL"],
     ["6♣", "5♣", "4♣", "3♣", "2♣", "A♥", "K♥", "Q♥", "T♥", "T♠"],
@@ -33,18 +55,29 @@ const Sequence = (props) => {
     ["JL", "A♦", "K♦", "Q♦", "T♦", "9♦", "8♦", "7♦", "6♦", "JB"],
   ];
 
-  const handlePlaceToken = (coord) => {
+  const handlePlaceToken = (coord, card) => {
     if (!me.isActive) return;
-    db.placeToken(gameId, coord, me.team).then(() =>
-      console.log(`token placed at ${coord}`)
-    );
+    db.placeToken(
+      gameId,
+      game,
+      coord,
+      me.team,
+      currentPlayerId,
+      nextPlayerId,
+      card
+    ).then(() => console.log(`token placed at ${coord}`));
   };
 
-  const handleRemoveToken = (coord) => {
+  const handleRemoveToken = (coord, card) => {
     if (!me.isActive || !hasOneEyedJack) return;
-    db.removeToken(gameId, coord).then(() =>
-      console.log(`token removed at ${coord}`)
-    );
+    db.removeToken(
+      gameId,
+      game,
+      coord,
+      currentPlayerId,
+      nextPlayerId,
+      card
+    ).then(() => console.log(`token removed at ${coord}`));
   };
 
   return (
@@ -58,8 +91,10 @@ const Sequence = (props) => {
             {row.map((card, y) => (
               <li key={uniqueId(`row-${card}`)}>
                 <Card
-                  canTake={myCards.includes(card) || hasTwoEyedJack}
-                  canRemove={hasOneEyedJack}
+                  canTake={
+                    me.isActive && (myCards.includes(card) || hasTwoEyedJack)
+                  }
+                  canRemove={me.isActive && hasOneEyedJack}
                   data={card}
                   coord={[x, y]}
                   token={get(moves, `${x}.${y}`)}
