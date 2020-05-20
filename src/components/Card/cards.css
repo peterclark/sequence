@@ -509,6 +509,7 @@
 }
 .playingCards ul.hand {
   margin-bottom: 3.5em;
+  margin-bottom: 2em;
 }
 .playingCards ul.table li,
 .playingCards ul.hand li,

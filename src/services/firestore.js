@@ -10,6 +10,8 @@ import {
   remove,
   get,
   size,
+  pullAt,
+  indexOf,
 } from "lodash";
 
 const SUITS = ["♣", "♦", "♥", "♠"];
@@ -82,7 +84,7 @@ export const startGame = (gameId, players) => {
   };
   shuffle(players).forEach((player, index) => {
     const playerPath = `players.${player.id}`;
-    const hand = remove(cards, (card, index) => index < 5);
+    const hand = remove(cards, (card, index) => index < 6);
     if (index === 0) game[`${playerPath}.isActive`] = true;
     game[`${playerPath}.cards`] = hand;
   });
@@ -103,8 +105,11 @@ export const placeToken = (
   let remainingCards = playerCards.filter((c) => c !== card);
   if (size(playerCards) === size(remainingCards)) {
     // Player doesnt have card so played a wild (J♣ or J♦)
-    const wild = playerCards.includes("J♣") ? "J♣" : "J♦";
-    remainingCards = playerCards.filter((c) => c !== wild);
+    if (remainingCards.includes("J♣")) {
+      pullAt(remainingCards, indexOf(remainingCards, "J♣"));
+    } else {
+      pullAt(remainingCards, indexOf(remainingCards, "J♦"));
+    }
   }
   const availableCard = cards.shift();
   const updatedCards = availableCard
@@ -136,8 +141,12 @@ export const removeToken = (
   if (!playerCards.includes("J♠") && !playerCards.includes("J♥")) {
     return;
   }
-  const wild = playerCards.includes("J♠") ? "J♠" : "J♥";
-  const remainingCards = playerCards.filter((c) => c !== wild);
+  let remainingCards = [...playerCards];
+  if (remainingCards.includes("J♠")) {
+    pullAt(remainingCards, indexOf(remainingCards, "J♠"));
+  } else {
+    pullAt(remainingCards, indexOf(remainingCards, "J♥"));
+  }
   const availableCard = cards.shift();
   const updatedCards = availableCard
     ? [...remainingCards, availableCard]

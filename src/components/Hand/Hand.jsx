@@ -4,12 +4,12 @@ import { range, size } from "lodash";
 import "./Hand.scss";
 
 const Hand = ({ cards = [], mine, isActive }) => {
-  const numberOfCards = useMemo(() => size(cards) || 5, [cards]);
+  const numberOfCards = useMemo(() => size(cards) || 6, [cards]);
 
   return (
-    <div className="playingCards faceImages fourColours rotateHand Hand">
+    <div className="playingCards faceImages fourColours Hand">
       {(!mine || !isActive) && (
-        <ul className="hand">
+        <ul className="deck">
           {range(numberOfCards).map((c) => (
             <BackCard key={`card-${c}`} />
           ))}

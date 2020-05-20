@@ -146,4 +146,13 @@
       }
     }
   }
+
+  .BottomPanel {
+    display: flex;
+    padding-bottom: 2em;
+    align-items: center;
+    flex-direction: column;
+    font-weight: 600;
+    width: 100%;
+  }
 }

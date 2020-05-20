@@ -189,6 +189,15 @@ function App() {
         )}
         <Sequence game={game} gameId={gameId} userId={userId} />
       </div>
+      <div className="BottomPanel">
+        <div>
+          WILD - <span className="text-success">J♣</span>{" "}
+          <span className="text-primary">J♦</span>
+        </div>
+        <div>
+          TAKE - <span className="text-danger">J♥</span> <span>J♠</span>
+        </div>
+      </div>
     </div>
   );
 }
