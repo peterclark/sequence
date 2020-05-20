@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { BackCard, HandCard } from "../Card/Card";
-import { range } from "lodash";
+import { range, size } from "lodash";
 import "./Hand.scss";
 
 const Hand = ({ cards = [], mine, isActive }) => {
-  console.log(cards, mine);
+  const numberOfCards = useMemo(() => size(cards) || 5, [cards]);
+
   return (
     <div className="playingCards faceImages fourColours rotateHand Hand">
       {(!mine || !isActive) && (
         <ul className="hand">
-          {range(5).map((c) => (
+          {range(numberOfCards).map((c) => (
             <BackCard key={`card-${c}`} />
           ))}
         </ul>

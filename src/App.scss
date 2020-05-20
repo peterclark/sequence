@@ -40,6 +40,10 @@
 
           &.isPlaying {
             font-weight: 600;
+
+            .Name {
+              border-bottom: 5px solid rgba(0, 0, 0, 0.75);
+            }
           }
           .fas {
             display: inline-block;

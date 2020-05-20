@@ -166,7 +166,7 @@ function App() {
                   })}
                 >
                   <i className={`fas fa-life-ring text-${team}`} />
-                  {playerMap[position].name}
+                  <span className="Name">{playerMap[position].name}</span>
                 </span>
               </div>
             )}
