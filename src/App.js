@@ -49,7 +49,6 @@ function App() {
     db.createGame(userId, userName)
       .then((doc) => {
         setGameId(doc.id);
-        console.log(`${userName} created game ${doc.id}`);
       })
       .catch((error) => console.log(error));
   };
@@ -63,14 +62,11 @@ function App() {
   };
 
   const handleStartGame = () => {
-    db.startGame(gameId, players).then(() =>
-      console.log(`game starting with ${players.length} players...`)
-    );
+    db.startGame(gameId, players);
   };
 
   const onGameUpdate = (data) => {
     setGame(data);
-    console.log("game updated...", data);
   };
 
   const handleTypeName = (e) => {
@@ -91,8 +87,6 @@ function App() {
             .then((game) => {
               if (game.exists) {
                 db.subscribeToGame(gameId, onGameUpdate);
-              } else {
-                console.log(`Game ${gameId} does not exist.`);
               }
             })
             .catch(() => console.log("error getting game"));

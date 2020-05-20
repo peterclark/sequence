@@ -110,7 +110,7 @@ export const placeToken = (
   const updatedCards = availableCard
     ? [...remainingCards, availableCard]
     : remainingCards;
-  console.log(updatedCards);
+
   return db
     .collection("games")
     .doc(gameId)

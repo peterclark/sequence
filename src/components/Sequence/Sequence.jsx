@@ -65,19 +65,12 @@ const Sequence = (props) => {
       currentPlayerId,
       nextPlayerId,
       card
-    ).then(() => console.log(`token placed at ${coord}`));
+    );
   };
 
   const handleRemoveToken = (coord, card) => {
     if (!me.isActive || !hasOneEyedJack) return;
-    db.removeToken(
-      gameId,
-      game,
-      coord,
-      currentPlayerId,
-      nextPlayerId,
-      card
-    ).then(() => console.log(`token removed at ${coord}`));
+    db.removeToken(gameId, game, coord, currentPlayerId, nextPlayerId, card);
   };
 
   return (
