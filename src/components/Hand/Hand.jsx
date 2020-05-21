@@ -1,6 +1,6 @@
 import React, { useMemo } from "react";
 import { BackCard, HandCard } from "../Card/Card";
-import { range, size } from "lodash";
+import { range, size, uniqueId } from "lodash";
 import "./Hand.scss";
 
 const Hand = ({ cards = [], mine, isActive }) => {
@@ -19,7 +19,7 @@ const Hand = ({ cards = [], mine, isActive }) => {
       {mine && isActive && (
         <ul className="hand">
           {cards.map((card) => (
-            <HandCard data={card} key={`card-${card}`} />
+            <HandCard data={card} key={uniqueId("card-")} />
           ))}
         </ul>
       )}

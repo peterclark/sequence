@@ -102,7 +102,8 @@ export const placeToken = (
 ) => {
   const cards = get(game, "cards") || [];
   const playerCards = get(game, `players.${currentPlayerId}.cards`);
-  let remainingCards = playerCards.filter((c) => c !== card);
+  let remainingCards = [...playerCards];
+  pullAt(remainingCards, indexOf(remainingCards, card));
   if (size(playerCards) === size(remainingCards)) {
     // Player doesnt have card so played a wild (J♣ or J♦)
     if (remainingCards.includes("J♣")) {
