@@ -1,13 +1,50 @@
+body {
+  display: flex;
+  width: 100%;
+
+  #root {
+    display: flex;
+    width: 100%;
+  }
+}
+
 .App {
   display: flex;
+  flex-grow: 1;
   flex-direction: column;
   align-items: center;
   min-height: 100vh;
   background-color: rgba(0, 0, 0, 0.05);
 
-  .input-group {
+  @media (max-width: 1024px) {
+    font-size: 0.85em;
+    .fa-3x {
+      font-size: 2em !important;
+    }
+  }
+
+  @media (max-width: 768px) {
+    font-size: 0.7em;
+    .fa-3x {
+      font-size: 1em !important;
+    }
+  }
+
+  .NameForm {
+    display: flex;
+    align-items: center;
+    margin: auto 0;
     width: 50%;
-    margin-top: 50vh;
+    button {
+      margin: auto 1em;
+    }
+    @media (max-width: 768px) {
+      flex-direction: column;
+      button {
+        width: 100%;
+        margin-top: 1em;
+      }
+    }
   }
 
   .TopPanel {
@@ -22,6 +59,15 @@
       &.isEmpty {
         display: none;
       }
+
+      @media (max-width: 1024px) {
+        margin: 0 1em;
+      }
+
+      @media (max-width: 768px) {
+        margin: 0 0.5em;
+      }
+
       .SeatedPlayer {
         display: flex;
         flex-direction: column;

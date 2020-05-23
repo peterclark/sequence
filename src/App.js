@@ -99,19 +99,17 @@ function App() {
   if (!game) {
     return (
       <div className="App">
-        <InputGroup className="mb-3">
+        <div className="NameForm">
           <FormControl
             size="lg"
             placeholder="Enter your name..."
             className="NameInput"
             onChange={handleTypeName}
           />
-          <InputGroup.Append>
-            <Button onClick={handleCreateGame} disabled={!validName}>
-              Start Game
-            </Button>
-          </InputGroup.Append>
-        </InputGroup>
+          <Button size="lg" onClick={handleCreateGame} disabled={!validName}>
+            Start
+          </Button>
+        </div>
       </div>
     );
   }
@@ -119,19 +117,17 @@ function App() {
   if (!player) {
     return (
       <div className="App">
-        <InputGroup className="mb-3">
+        <div className="NameForm">
           <FormControl
             size="lg"
             placeholder="Enter your name..."
             className="NameInput"
             onChange={handleTypeName}
           />
-          <InputGroup.Append>
-            <Button onClick={handleJoinGame} disabled={!validName}>
-              Join Game
-            </Button>
-          </InputGroup.Append>
-        </InputGroup>
+          <Button size="lg" onClick={handleJoinGame} disabled={!validName}>
+            Join
+          </Button>
+        </div>
       </div>
     );
   }

@@ -17,7 +17,7 @@ const Hand = ({ cards = [], mine, isActive }) => {
       )}
 
       {mine && isActive && (
-        <ul className="hand">
+        <ul className="hand MyHand">
           {cards.map((card) => (
             <HandCard data={card} key={uniqueId("card-")} />
           ))}
